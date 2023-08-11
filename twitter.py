@@ -23,6 +23,15 @@ class Account:
     def go_to(self, url):
         self.driver.get(url)
 
+    def backward(self):
+        self.driver.back()
+
+    def forward(self):
+        self.driver.forward()
+
+    def refresh(self):
+        self.driver.refresh()
+
     def quit(self):
         self.driver.quit()
 
@@ -42,23 +51,19 @@ class Account:
                 if driver.current_url != login_url:
                     driver.get(login_url)
 
-                usernameInput = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='text']")))
-
-                sleep(2)
+                usernameInput = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='text']")))
 
                 usernameInput.send_keys(self._username)
-                
-                sleep(5)
+
+                WebDriverWait(usernameInput, 5).until(lambda inp: inp.get_attribute('value') == self._username)
 
                 usernameInput.send_keys(Keys.ENTER)
-
-                sleep(2)
 
                 passwordInput = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
       
                 passwordInput.send_keys(self._password)
 
-                sleep(2)
+                WebDriverWait(passwordInput, 5).until(lambda inp: inp.get_attribute('value') == self._password)
 
                 passwordInput.send_keys(Keys.ENTER)
 
@@ -222,7 +227,9 @@ class Account:
             videos_tags = soup.find_all('video')
 
             for video in videos_tags:
-                post.add_video(video['src'])
+                src = video['src']
+                if not src.startswith('blob'):
+                    post.add_video(video['src'])
 
             post.set_user(user)
             post.set_text(text)

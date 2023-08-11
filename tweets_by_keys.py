@@ -73,14 +73,13 @@ def main():
             account.search_by_user(target_user, tab = want)
 
         tries, max_stop_tries = 0, 1000
-        cur_y = -10 ** 9
+        cur_max_y = -10 ** 9
 
         posts_set = dict()
         
-        while n_posts > 0:
-            sucesso = 0
+        while n_posts > 0 and tries < max_stop_tries:
+            max_y, sucesso = 0, 0
             elements = account.get_next_posts() or []
-            next_y = 0
 
             for element in elements:
                 if n_posts == 0:
@@ -88,7 +87,7 @@ def main():
 
                 try:
                     y = element.location['y']
-                    next_y = max(next_y, y)
+                    max_y = max(max_y, y)
                 except:
                     pass
 
@@ -117,15 +116,12 @@ def main():
 
             account.scroll_by_amount(0, max(50, sucesso * 200))
 
-            if next_y - cur_y <= 0:
+            if max_y - cur_max_y <= 0:
                 tries += 1
                 sleep(0.1)
-                if tries >= max_stop_tries:
-                    break
             else:
                 tries = 0
-
-            cur_y = max(cur_y, next_y)
+                cur_max_y = max_y
 
         opcao = input('quer salvar os dados[Y/N]?: ')
 
@@ -135,7 +131,7 @@ def main():
 
         account.logout()
     except Exception as ex:
-        print(f'uma excessção acabou de ocorrer: {ex}\n')
+        print(f'uma exceção acabou de ocorrer: {ex}\n')
     finally:
         account.quit()
     
