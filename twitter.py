@@ -229,7 +229,7 @@ class Account:
             for video in videos_tags:
                 src = video['src']
                 if not src.startswith('blob'):
-                    post.add_video(video['src'])
+                    post.add_video(src)
 
             post.set_user(user)
             post.set_text(text)
