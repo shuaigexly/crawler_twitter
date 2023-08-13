@@ -11,7 +11,7 @@
 
 Captura posts de uma determinada conta, atráves de palavras chaves, do twitter (apenas as que foram publicadas pelo próprio usuário) contendo
 todo o texto presente, todas as imagens no tweet (incluindo as que não aparecem), todos os links (incluindo os que não aparecem) e
-videos (somente gifs, pois os outros são armazenados em um local diferente) além da data e horário da postagem em UTC e após isso armazena os dados num arquivo csv.
+videos (somente gifs, pois os outros são armazenados em um local diferente) além da data e horário da postagem em UTC +0 e após isso armazena os dados num arquivo csv.
 
 # Opções
 - Busca completa no twitter
@@ -30,7 +30,7 @@ videos (somente gifs, pois os outros são armazenados em um local diferente) al�
 2. digite sua senha
 3. digite a quantidade de posts que serão capturados
 4. digite o nome do usuário alvo
-5. digite a quantidade keywords (pode ter espaço) - se passar uma linha em branco dá match com qualquer post
+5. digite a quantidade de keywords (pode ter espaço) - se passar uma linha em branco dá match com qualquer post
 6. insira as keywords (uma por linha)
 7. digite a opção da busca: busca completa(full) ou por busca de palavras chaves(search)
 8. digite a janela da busca: uma das opções do tipo de busca feita em (7)
