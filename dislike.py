@@ -16,7 +16,7 @@ def main():
 
         cnt_accounts = int(input('quantidade de contas: '))
 
-        targets = set([input('próxima conta: ') for i in range(cnt_accounts)])
+        targets = set([input('próxima conta: ').lower() for i in range(cnt_accounts)])
 
         conta = Account(username, password)
 
@@ -28,6 +28,8 @@ def main():
         cur_max_y = -10 ** 9
 
         post_set = dict()
+
+        can_all = '*' in targets
 
         while tries < max_stop_tries:
             max_y, sucesso = 0, 0
@@ -48,7 +50,7 @@ def main():
 
                 user, datetime = post.user, post.datetime
 
-                if (user in targets) and ((user, datetime) not in post_set):
+                if (can_all or user.lower() in targets) and (user, datetime) not in post_set:
                     print(f'usuário = {user}, datetime = {datetime}\n')
                     post_set[(user, datetime)] = post
                     conta.like_post(element, want = 'unlike')

@@ -16,7 +16,7 @@ input, print = stdin.readline, stdout.write
 class Account:
     def __init__(self, username, password):
         self.driver = webdriver.Firefox(service = FirefoxService(GeckoDriverManager().install()))
-        self.driver.set_window_size(500, 500)        
+        self.driver.set_window_size(400, 600)        
         self._username = username
         self._password = password
 
@@ -109,8 +109,6 @@ class Account:
 
         query = " OR ".join(map(lambda s: '"' + s + '"', keywords))
 
-        sleep(5)
-
         query_url = 'https://twitter.com/search?q=' + query + "&src=typed_query"
 
         if tab == 'principal':
@@ -128,8 +126,6 @@ class Account:
         driver = self.driver
 
         query = 'from:@' + user + ' ' + " OR ".join(map(lambda s: '"' + s + '"', keywords))
-
-        sleep(5)
 
         query_url = 'https://twitter.com/search?q=' + query + "&src=typed_query"
 

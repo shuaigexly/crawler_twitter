@@ -28,7 +28,7 @@ def main():
 
         n_posts = int(input('quantidade de posts: '))
        
-        target_user = input('nome do usuário alvo: ')
+        target_user = input('nome do usuário alvo: ').lower()
         target_keywords = []
 
         cnt_keys = int(input('quantidade de keywords: '))
@@ -100,12 +100,11 @@ def main():
 
                 found_key = False
 
-                if user == target_user:
+                if user.lower() == target_user:
                     for key in target_keywords:
                         if text.find(key.lower()) != -1:
                             found_key = True
                             break
-
                 
                 if found_key and (user, datetime) not in posts_set:
                     print(f'user = {user}, datetime = {datetime}, text = {text}\n')
