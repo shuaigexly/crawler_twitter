@@ -7,7 +7,7 @@
 3. instale o BeautifulSoup (bs4)
     - pip install beautifulsoup4
 
-# Crawler de posts do twitter
+# Crawler de posts do twitter - ./tweets_by_keys.py
 
 Captura posts de uma determinada conta, atráves de palavras chaves, do twitter (apenas as que foram publicadas pelo próprio usuário) contendo
 todo o texto presente, todas as imagens no tweet (incluindo as que não aparecem), todos os links (incluindo os que não aparecem) e
@@ -38,7 +38,7 @@ videos (somente gifs, pois os outros são armazenados em um local diferente) al�
 10. caso queira salvar digite o nome do arquivo
 
 
-# Bot de unlike
+# Bot de unlike - ./dislike.py
 
 Dá unlike nos posts das contas que passar como parâmetro ou remove todos os likes
 
