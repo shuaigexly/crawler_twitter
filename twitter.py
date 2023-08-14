@@ -187,16 +187,21 @@ class Account:
 
     def get_next_posts(self):
         try:
-            elements = WebDriverWait(self.driver, 5).until(EC.presence_of_all_elements_located((By.TAG_NAME, "article")))
+            elements = WebDriverWait(self.driver, 2.5).until(EC.presence_of_all_elements_located((By.TAG_NAME, "article")))
             return elements
         except Exception as ex:
             print(f'erro ao capturar os próximos posts: {ex}\n')
 
     def get_post_info(self, element):
         try:
-            post = Post()
+            soup = BeautifulSoup(element.get_attribute('innerHTML'), 'html.parser')
+            return self.get_post_info_from_soup(soup)
+        except Exception as ex:
+            print(f'erro ao obter o innerHTML do article: {ex}')
 
-            soup = BeautifulSoup(element.get_attribute('innerHTML'), "html.parser")
+    def get_post_info_from_soup(self, soup):
+        try:
+            post = Post()
 
             user_name_div = soup.find('div', attrs = {'data-testid': 'User-Name'})
 
@@ -204,7 +209,7 @@ class Account:
 
             user = user_name_link['href'].split('/')[-1]
 
-            tweetText_divs = soup.find_all('div', attrs = {'data-testid': 'tweetText'})
+            tweetText_divs = soup.find_all('div', attrs = {'data-testid': 'tweetText'}) or []
             text = "".join([span.get_text() for div in tweetText_divs for span in div.find_all('span')])
             
             timetag = soup.find('time')
