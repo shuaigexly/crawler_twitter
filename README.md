@@ -7,11 +7,11 @@
 3. instale o BeautifulSoup (bs4)
     - pip install beautifulsoup4
 
-# Crawler de posts do twitter - ./tweets_by_keys.py
+# Crawler de posts do twitter - ./tweets_by_keys.py ou crawler.py
 
 Captura posts de uma determinada conta, atráves de palavras chaves, do twitter (apenas as que foram publicadas pelo próprio usuário) contendo
 todo o texto presente, todas as imagens no tweet (incluindo as que não aparecem), todos os links (incluindo os que não aparecem) e
-videos (somente gifs, pois os outros são armazenados em um local diferente) além da data e horário da postagem em UTC +0 e após isso armazena os dados num arquivo csv.
+videos (somente gifs, pois os outros são armazenados em um local diferente) além da data e horário da postagem em UTC -3 e após isso armazena os dados num arquivo csv.
 
 # Opções
 - Busca completa no twitter
