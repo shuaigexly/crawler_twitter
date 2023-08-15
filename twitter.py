@@ -191,6 +191,7 @@ class Account:
             return elements
         except Exception as ex:
             print(f'erro ao capturar os próximos posts: {ex}\n')
+            return []
 
     def get_post_info(self, element):
         try:

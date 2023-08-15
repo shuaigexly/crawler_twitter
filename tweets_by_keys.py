@@ -7,16 +7,18 @@ from time import sleep
 print = stdout.write
 
 def save_posts(posts, filename):
-    import pandas as pd
+    from pandas import DataFrame
+    from datetime import datetime as dt, timedelta
 
     with open(filename, 'w') as f:
         users = []
 
         for post in posts.values():
             user, datetime, text, link, image, video = post.user, post.datetime, post.get_text(), post.get_links(), post.get_images(), post.get_videos()
-            users.append([user, datetime, text, link, image, video])
+            datetime = dt.fromisoformat(datetime) - timedelta(hours = 3)
+            users.append([user, str(datetime), text, link, image, video])
 
-        post_df = pd.DataFrame(data = users, columns = ['user', 'datetime', 'text', 'link', 'image', 'gif'])
+        post_df = DataFrame(data = users, columns = ['user', 'datetime', 'text', 'link', 'image', 'gif'])
         post_df.to_csv(filename + ".csv")
 
 def main():
@@ -79,7 +81,7 @@ def main():
         
         while n_posts > 0 and tries < max_stop_tries:
             max_y, sucesso = 0, 0
-            elements = account.get_next_posts() or []
+            elements = account.get_next_posts()
 
             for element in elements:
                 if n_posts == 0:

@@ -34,7 +34,7 @@ def main():
         while tries < max_stop_tries:
             max_y, sucesso = 0, 0
         
-            elements = conta.get_next_posts() or []
+            elements = conta.get_next_posts()
 
             for element in elements:
                 try:
