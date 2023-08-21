@@ -59,3 +59,5 @@ Dá unlike nos posts das contas que passar como parâmetro ou remove todos os li
 4. digite a quantidade de contas alvos
 5. digite os nomes dessas contas (uma por linha) - se passar um * dá match com qualquer conta
 
+[crawler-1.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/e8f6631f-b275-4ad3-8569-5b6556a0a616)
+
