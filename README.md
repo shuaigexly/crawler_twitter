@@ -46,7 +46,6 @@ videos (somente gifs, pois os outros são armazenados em um local diferente) al�
 10. após a captura das informações digite se quer salvar ou não em um arquivo Y ou N
 11. caso queira salvar digite o nome do arquivo
 
-
 # Bot de unlike
 
 Dá unlike nos posts das contas que passar como parâmetro ou remove todos os likes
@@ -59,5 +58,28 @@ Dá unlike nos posts das contas que passar como parâmetro ou remove todos os li
 4. digite a quantidade de contas alvos
 5. digite os nomes dessas contas (uma por linha) - se passar um * dá match com qualquer conta
 
+### Parte 1
 [crawler-1.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/e8f6631f-b275-4ad3-8569-5b6556a0a616)
+
+### Parte 2
+[crawler-2.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/87c7a47a-1b72-4b41-8c9c-55b839d31636)
+
+### Parte 3
+[crawler-3.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/23ff993a-f77d-4ab4-a74e-d136732fc44f)
+
+### Parte 4
+[crawler-4.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/a07279f5-03fa-439c-a12b-56c2beffcef7)
+
+### Parte 5
+[crawler-5.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/6c803999-76fc-48eb-8dbe-f4e1f148c425)
+
+### Parte 6
+[crawler-6.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/9d1c46b0-3ec5-437c-8889-6145bd6501e7)
+
+### Parte 7
+[crawler-7.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/26bc8175-4328-4f98-b5f0-b8412ee8c0b9)
+
+### Parte 8
+[crawler-8.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/c86dabc2-b946-4eac-8e63-c115412112c9)
+
 
