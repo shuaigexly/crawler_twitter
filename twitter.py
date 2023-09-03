@@ -43,7 +43,7 @@ class Account:
 
         driver = self.driver
 
-        login_url = 'https://twitter.com/i/flow/login?redirect_after_login=%2F'
+        login_url = 'https://x.com/i/flow/login?redirect_after_login=%2F'
 
         while True:
             try:
@@ -82,7 +82,7 @@ class Account:
 
     def logout(self):
         tries = 0
-        logout_url = 'https://www.twitter.com/logout'
+        logout_url = 'https://www.x.com/logout'
 
         while True:
             try:
@@ -104,41 +104,29 @@ class Account:
                     tries = 0
                     self.driver.refresh()
 
-    def search(self, keywords, tab = 'principal'):
+    def search(self, keywords, tab = 'main'):
         driver = self.driver
 
         query = " OR ".join(map(lambda s: '"' + s + '"', keywords))
 
-        query_url = 'https://twitter.com/search?q=' + query + "&src=typed_query"
+        query_url = 'https://x.com/search?q=' + query + "&src=typeahead_click"
 
-        if tab == 'principal':
+        if tab == 'main':
             driver.get(query_url)
-        elif tab == 'recente':
-            driver.get(query_url + '&f=live')
-        elif tab == 'usuario':
-            driver.get(query_url + '&f=user')
-        elif tab == 'foto':
-            driver.get(query_url + '&f=image')
-        elif tab == 'video':
-            driver.get(query_url + '&f=video')
+        else:
+            driver.get(f'{query_url}&f={tab}')
 
-    def search_by_user(self, keywords, user, tab = 'principal'):
+    def search_by_user(self, keywords, user, tab = 'main'):
         driver = self.driver
 
         query = 'from:@' + user + ' ' + " OR ".join(map(lambda s: '"' + s + '"', keywords))
 
-        query_url = 'https://twitter.com/search?q=' + query + "&src=typed_query"
+        query_url = 'https://x.com/search?q=' + query + "&src=typeahead_click"
 
-        if tab == 'principal':
+        if tab == 'main':
             driver.get(query_url)
-        elif tab == 'recente':
-            driver.get(query_url + '&f=live')
-        elif tab == 'usuario':
-            driver.get(query_url + '&f=user')
-        elif tab == 'foto':
-            driver.get(query_url + '&f=image')
-        elif tab == 'video':
-            driver.get(query_url + '&f=video')
+        else:
+            driver.get(f'{query_url}&f={tab}')
 
     def search_by_users(self, users_keywords, tab = 'principal'):
         driver = self.driver
@@ -151,18 +139,12 @@ class Account:
             if i + 1 < len(users_keywords):
                 query += ' OR '
 
-        query_url = 'https://twitter.com/search?q=' + query + "&src=typed_query"
+        query_url = 'https://x.com/search?q=' + query + "&src=typeahead_click"
 
-        if tab == 'principal':
+        if tab == 'main':
             driver.get(query_url)
-        elif tab == 'recente':
-            driver.get(query_url + '&f=live')
-        elif tab == 'usuario':
-            driver.get(query_url + '&f=user')
-        elif tab == 'foto':
-            driver.get(query_url + '&f=image')
-        elif tab == 'video':
-            driver.get(query_url + '&f=video')
+        else:
+            driver.get(f'{query_url}&f={tab}')
 
     def like_post(self, element, want = 'like'):
         status = 1
@@ -199,6 +181,29 @@ class Account:
             return self.get_post_info_from_soup(soup)
         except Exception as ex:
             print(f'erro ao obter o innerHTML do article: {ex}')
+
+    def delete_post(self, article):
+        status = True
+
+        try:
+            caret = article.find_element(By.XPATH, "//div[@data-testid='caret']")
+
+            caret.click()
+
+            dropdown = WebDriverWait(self.driver, 1.0).until(EC.presence_of_element_located((By.XPATH, "//div[@data-testid='Dropdown']")))
+            
+            menuitem = dropdown.find_element(By.TAG_NAME, "div")
+
+            menuitem.click()
+
+            confirmationSheetConfirm = WebDriverWait(self.driver, 1.0).until(EC.element_to_be_clickable((By.XPATH, "//div[@data-testid='confirmationSheetConfirm']")))
+
+            confirmationSheetConfirm.click()
+        except Exception as ex:
+            status = False
+            print(f'erro ao exlcluir post: {ex}\n')
+
+        return status
 
     def get_post_info_from_soup(self, soup):
         try:

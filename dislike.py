@@ -3,21 +3,12 @@
 from twitter import Account
 from sys import stdout
 from time import sleep
+import json
 
 print = stdout.write
 
-def main():
-
+def unlike(username, password, targets):
     try:
-        print('iniciando o seu login\n')
-
-        username = input('digite seu usuário: ')
-        password = input('digite sua senha: ')
-
-        cnt_accounts = int(input('quantidade de contas: '))
-
-        targets = set([input('próxima conta: ').lower() for i in range(cnt_accounts)])
-
         conta = Account(username, password)
 
         conta.login()
@@ -72,6 +63,21 @@ def main():
         print(f'uma exceção acabou de ocorrer: {ex}\n')
     finally:
         conta.quit()
+
+def main():
+    fp = open('dislike_params.json')
+
+    params = json.load(fp)
+
+    fp.close()
+
+    keys = ['username', 'password', 'targets']
+
+    for key in keys:
+        if key not in params:
+            raise Exception(f'dislike_params.json não contém o campo {key}')
+
+    unlike(**params)
 
 if __name__ == '__main__':
     main()

@@ -4,6 +4,7 @@ from twitter import Account
 from sys import argv, stdout
 from time import sleep
 from bs4 import BeautifulSoup
+import json
 
 print = stdout.write
 
@@ -14,7 +15,7 @@ def save_posts(posts, filename):
     with open(filename, 'w') as f:
         users = []
 
-        for post in posts.values():
+        for post in posts:
             user, datetime, text, link, image, video = post.user, post.datetime, post.get_text(), post.get_links(), post.get_images(), post.get_videos()
             datetime = dt.fromisoformat(datetime) - timedelta(hours = 3)
             users.append([user, str(datetime), text, link, image, video])
@@ -22,47 +23,25 @@ def save_posts(posts, filename):
         post_df = DataFrame(data = users, columns = ['user', 'datetime', 'text', 'link', 'image', 'gif'])
         post_df.to_csv(filename + ".csv")
 
-def main():
+def crawler(username, password, target_user, target_keywords, search_type, search_sub_type, limit = -1, output = None):
     try:
-        print('iniciando o seu login\n')
+        target_user = target_user.lower()
+        target_keywords = list(map(lambda key: key.lower(), target_keywords))
+        limit = 10 ** 9 if limit == -1 else limit
 
-        username = input('usernamee: ')
-        password = input('password: ')
-
-        n_posts = int(input('quantidade de posts: '))
-       
-        target_user = input('nome do usuário alvo: ').lower()
-        target_keywords = []
-
-        cnt_keys = int(input('quantidade de keywords: '))
-        
-        for j in range(cnt_keys):
-            keyword = input(f'qual é a {j+1}ª keyword: ')
-            target_keywords.append(keyword.lower())
-
-        tipo = input('tipo da busca[full/search]: ')
-
-        if tipo == 'full':
-            subtipo = input('qual é o subtipo[default/with_replies/media]: ')
+        if search_type == 'full':
             want = None
-            if subtipo == 'default':
+            if search_sub_type == 'default':
                 want = ''
-            elif subtipo == 'with_replies' or subtipo == 'media':
-                want = subtipo
+            elif search_sub_type in ('with_replies', 'media'):
+                want = search_sub_type
             else:
                 raise Exception('operação não suportada')
 
-        elif tipo == 'search':
-            subtipo = input('qual é o subtipo[principal/recentes/foto/video]: ')
+        elif search_type == 'search':
             want = None
-            if subtipo == 'principal':
-                want = 'principal'
-            elif subtipo == 'recentes':
-                want = 'recente'
-            elif subtipo == 'foto':
-                want = 'foto'
-            elif subtipo == 'video':
-                want = 'video'
+            if search_sub_type in ('main', 'live', 'user', 'media'):
+                want = search_sub_type
             else:
                 raise Exception('operação não suportada')
 
@@ -70,18 +49,19 @@ def main():
 
         account.login()
 
-        if tipo == 'full':
+        if search_type == 'full':
             account.go_to(f'https://www.x.com/{target_user}/{want}')
         else:
-            account.search_by_user(target_user, tab = want)
+            account.search_by_user(target_keywords, target_user, tab = want)
 
-        tries, max_stop_tries = 0, 500
+        tries, max_stop_tries = 0, 100
 
-        posts_set = dict()
+        posts_set = set()
+        posts_list = []
         
         driver = account.driver
 
-        while n_posts > 0 and tries < max_stop_tries:
+        while limit > 0 and tries < max_stop_tries:
             has_new_post, sucesso = False, 0
     
             page_source = driver.page_source
@@ -100,21 +80,22 @@ def main():
 
                 found_key = False
 
-                if user.lower() == target_user:
-                    has_new_post = has_new_post or (user, datetime) not in posts_set
+                if user.lower() == target_user and (user, datetime) not in posts_set:
+                    has_new_post = True
+                    posts_set.add((user, datetime))
 
                     for key in target_keywords:
                         if text.find(key.lower()) != -1:
                             found_key = True
                             break
                 
-                if found_key and (user, datetime) not in posts_set:
-                    print(f'user = {user}, datetime = {datetime}, text = {text}\n')
-                    n_posts -= 1
-                    posts_set[(user, datetime)] = post
+                    if found_key:
+                        print(f'user = {user}, datetime = {datetime}, text = {text}\n')
+                        limit -= 1
+                        posts_list.append(post)
                 
                 sucesso += 1
-                
+
             account.scroll_by_amount(0, max(50, sucesso * 200))
 
             if has_new_post:
@@ -122,18 +103,29 @@ def main():
             else:
                 tries += 1
                 sleep(0.1)
-            
-        opcao = input('quer salvar os dados[Y/N]?: ')
 
-        if opcao == 'Y' or opcao == 'y':
-            filename = input('digite o nome do arquivo: ')
-            save_posts(posts_set, filename)
+        if output: save_posts(posts_list, output)
 
         account.logout()
     except Exception as ex:
         print(f'uma exceção acabou de ocorrer: {ex}\n')
     finally:
         account.quit()
+
+def main():
+    fp = open('params.json', 'r')
+
+    params = json.load(fp)
+
+    fp.close()
+
+    keys = ['username', 'password', 'limit', 'target_user', 'target_keywords', 'search_type', 'search_sub_type']
+ 
+    for key in params:
+        if key not in params:
+            raise Exception(f'params.json não contém o campo {key}')
     
+    crawler(**params)
+
 if __name__ == '__main__':
     main()

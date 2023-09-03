@@ -27,24 +27,47 @@ videos (somente gifs, pois os outros são armazenados em um local diferente) al�
     - Na janela de respostas (with_replies)
     - Na janela de media (media)
 - Usando a barra de pesquisa e colocando palavras chaves
-    - Na janela principal (principal)
-    - Na janela dos recentes (recentes)
-    - Na janela das fotos (foto)
-    - Na janela dos videos (video)
+    - Na janela principal (main)
+    - Na janela dos recentes (live)
+    - Na janela das mídias (media)
+    - Na janela dos usuários (user)
 
 ## Instruções
 
-1. abra o seu terminal e digite python3 tweets_by_keys.py ou crawler.py
-2. digite seu usuário (não é o email nem número de celular)
-3. digite sua senha
-4. digite a quantidade de posts que serão capturados
-5. digite o nome do usuário alvo
-6. digite a quantidade de keywords (pode ter espaço) - se passar uma linha em branco dá match com qualquer post
-7. insira as keywords (uma por linha)
-8. digite a opção da busca: busca completa(full) ou por busca de palavras chaves(search)
-9. digite a janela da busca: uma das opções do tipo de busca feita em (7)
-10. após a captura das informações digite se quer salvar ou não em um arquivo Y ou N
-11. caso queira salvar digite o nome do arquivo
+Preencha o arquivo params.json
+
+```
+{
+    "username" : "thiago",
+    "password" : "1234",
+    "limit" : 800,
+    "target_user" : "JJKPerfectShots",
+    "target_keywords" : ["geto"],
+    "search_type" : "full",
+    "search_sub_type" : "default",
+    "output" : "dados"
+}
+```
+
+Sendo:
+
+- username o seu usuário
+- password a sua senha
+- limit o número máximo de posts a serem carregados (caso for -1 é sem limite)
+- target_user o usuário alvo
+- target_keywords as palavras-chave alvos (um "" dá match em qq post)
+- search_type é full se for pelo perfil ou search pela busca
+- search_sub_type
+    - se search_type é do tipo full
+        - se search_sub_type for default é na aba posts
+        - se search_sub_type for with_replies é com as respostas
+        - se search_sub_type for media é nas mídias
+    - se search_type é do tipo search_by_user
+        - se search_sub_type for main é na aba principal
+        - se search_sub_type for live é na aba dos recentes
+        - se search_sub_type for user é na aba dos usuários
+        - se search_sub_type for media é na aba da mídias
+- output é o nome do arquivo csv
 
 # Bot de unlike
 
@@ -52,11 +75,21 @@ Dá unlike nos posts das contas que passar como parâmetro ou remove todos os li
 
 ## Instruções
 
-1. abra o terminal e digite python3 dislike.py
-2. digite seu usuário (não é o email nem número de celular)
-3. digite sua senha
-4. digite a quantidade de contas alvos
-5. digite os nomes dessas contas (uma por linha) - se passar um * dá match com qualquer conta
+Preencha o arquivo dislike_params.json
+
+```
+{
+    "username" : "thiago",
+    "password" : "1234",
+    "targets" : ["JJKPerfectShots", "DemonSlayerUSA", "MobPsychoOne", "Chainsaw_EN"]
+}
+```
+
+Sendo:
+
+- username o seu usuário
+- password a sua senha
+- targets com as contas para tirar as curtidas (um "*" dá match em qq um)
 
 ### Parte 1
 [crawler-1.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/e8f6631f-b275-4ad3-8569-5b6556a0a616)
@@ -81,5 +114,3 @@ Dá unlike nos posts das contas que passar como parâmetro ou remove todos os li
 
 ### Parte 8
 [crawler-8.webm](https://github.com/ThiagoFBastos/crawler_twitter/assets/40869714/c86dabc2-b946-4eac-8e63-c115412112c9)
-
-
